@@ -1,0 +1,15 @@
+parser GLSNutScript:
+    file ".nut"
+    encoding utf8
+
+    read:
+        records as binary
+        magic "10 00 00 08"
+        length u32le
+        encoding utf8
+        min length 4
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

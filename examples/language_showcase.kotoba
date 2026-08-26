@@ -1,0 +1,20 @@
+parser LanguageShowcase:
+    file ".demo"
+    encoding utf8
+
+    type SpeakerName = matches "[A-Za-zÀ-ÿ_][^:]{0,40}"
+
+    protect:
+        matches "@[^\\s]+"
+        matches "\\[[^\\]]+\\]"
+
+    rule Dialogue:
+        when format "<speaker:SpeakerName>: <text:rest>"
+        save as Dialogue
+        patch text
+        patch speaker
+
+    rule Narration:
+        capture text as rest
+        save as Narration
+        patch text

@@ -1,0 +1,42 @@
+# Rust
+/target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Generated outputs
+out_*.json
+preview_*.json
+*.log
+*.tmp
+*.bak
+
+# Packages / releases
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.whl
+*.msi
+*.exe
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

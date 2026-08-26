@@ -1,0 +1,50 @@
+parser FlexibleBinaryNut:
+    file ".nut"
+    encoding utf8
+
+    read:
+        records as binary
+        magic "10 00 00 08"
+        length u32le
+        encoding utf8
+        min length 4
+
+    protect:
+        between "<" and ">"
+
+    ignore:
+        empty
+        equals any "main", "TransText", "TransAddText", "TransChoice", "TransLog", "TransVoice"
+        starts with "media/"
+        starts with "voice/"
+        ends with ".nut"
+        ends with ".ogg"
+        ends with ".png"
+        starts with "' class='"
+        starts with "' src='"
+        matches "^\\s*<\\?>\\s*$"
+        matches "^\\s*<K>\\s*$"
+
+    speaker:
+        when starts with "//【"
+        capture speaker between "//【" and "】"
+        remember speaker
+        skip
+
+    speaker:
+        when starts with "<voice "
+        capture speaker from attribute "name"
+        capture voice from attribute "src"
+        remember speaker
+        skip
+
+    dialogue:
+        capture text as rest
+        speaker fallback remembered speaker
+        save as Dialogue
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

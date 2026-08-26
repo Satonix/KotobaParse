@@ -1,0 +1,33 @@
+parser EfComposableSC:
+    file ".sc"
+    encoding cp932
+
+    protect:
+        matches "\\\\[A-Za-z]+"
+        matches "#[0-9]+"
+
+    ignore:
+        empty
+
+    choice:
+        when starts with ".select"
+        capture text as rest
+        save as Choice
+        patch text
+
+    dialogue:
+        when starts with ".message"
+
+        capture id as number
+        capture voice if like "AAA-*-0000"
+
+        capture speaker before quoted text
+        capture speaker before rest text if starts with any "@", "#"
+
+        capture text as quoted or rest
+
+        save as Dialogue
+        save otherwise as Narration
+
+        patch text
+        patch speaker

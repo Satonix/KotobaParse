@@ -1,0 +1,18 @@
+parser EFMessageProgram:
+    file ".sc"
+    encoding cp932
+
+    ignore:
+        empty
+
+    dialogue:
+        when starts with ".message"
+        capture id as number
+        capture voice as optional
+        capture speaker before quoted text
+        capture speaker before rest text if starts with any "@", "#"
+        capture text as quoted or rest
+        speaker fallback voice.speaker
+        save as Dialogue
+        save otherwise as Narration
+        patch text

@@ -1,0 +1,44 @@
+parser IndexedVNScript:
+    file ".txt"
+    encoding utf8
+
+    type AssetId = matches "^(map|sp|ev|bgm|se)[A-Za-z0-9_]*$|^black$"
+    type VoiceId = matches "^[a-zA-Z]+_[0-9]{6}(_[a-z])?$"
+    type Marker = matches "^[0-9]+(\\.[0-9]+)?$"
+
+    numbered lines:
+        id between "<" and ">"
+
+    ignore:
+        empty
+
+    rule Asset:
+        when format "<asset:AssetId>"
+        skip
+
+    rule Marker:
+        when format "<value:Marker>"
+        skip
+
+    voice:
+        matches "^[a-zA-Z]+_[0-9]{6}(_[a-z])?$"
+        remember voice
+        skip
+
+    speaker:
+        when previous is voice
+        when next is quoted
+        remember speaker
+        skip
+
+    dialogue:
+        capture text as quoted
+        speaker fallback speaker
+        speaker fallback voice.speaker
+        save as Dialogue
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

@@ -1,0 +1,12 @@
+parser YandereKiriKiriKS:
+    file ".ks"
+    encoding cp932
+
+    ignore:
+        empty
+        starts with any ";", "*", "["
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

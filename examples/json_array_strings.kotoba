@@ -1,0 +1,24 @@
+parser JsonArrayStrings:
+    file ".json"
+    encoding utf8
+
+    type AssetId = matches "^(bg|bgm|se|sp|ev|st|map|ysr)[A-Za-z0-9_]*$"
+    type CommandId = matches "^\\\\[A-Za-z_]+\\([^)]*\\)$"
+
+    rule Asset:
+        when format "\"<asset:AssetId>\","
+        skip
+
+    rule Command:
+        when format "\"<command:CommandId>\","
+        skip
+
+    rule Dialogue:
+        when format "\"<speaker:word>: <text:line>\","
+        save as Dialogue
+        patch text
+
+    rule Narration:
+        when format "\"<text:line>\","
+        save as Narration
+        patch text

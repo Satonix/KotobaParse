@@ -1,0 +1,49 @@
+name: Build Runtime Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Build runtime package
+        run: python tools/build_runtime.py --out-dir dist
+
+      - name: Upload runtime artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kotobaparse-runtime
+          path: |
+            dist/kotobaparse-runtime-*.zip
+            dist/kotobaparse-runtime-*.manifest.json
+
+      - name: Publish GitHub release assets
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --notes "KotobaParse runtime $TAG"
+          gh release upload "$TAG" dist/kotobaparse-runtime-*.zip dist/kotobaparse-runtime-*.manifest.json --clobber

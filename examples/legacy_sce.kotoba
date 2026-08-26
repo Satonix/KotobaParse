@@ -1,0 +1,38 @@
+parser LegacySCE:
+    file ".txt"
+    encoding cp932
+
+    type SpeakerName = matches "^(Alice|Bob|Carol|Dave|Narrator|Teacher)$"
+    type VoiceId = matches "^[A-Za-z0-9_]+$"
+
+    quotes:
+        pair "Åg" "Åh"
+
+    protect:
+        matches "@[A-Za-z0-9_]+"
+
+    ignore:
+        empty
+        asset
+
+    voice:
+        matches "^[A-Za-z0-9_]+$"
+        remember voice
+        skip
+
+    speaker:
+        when previous is voice
+        when next is quoted
+        remember speaker
+        skip
+
+    dialogue:
+        capture text as quoted
+        speaker fallback speaker
+        save as Dialogue
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

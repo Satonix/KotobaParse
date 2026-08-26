@@ -1,0 +1,45 @@
+parser EfFairyTaleMusicaSC:
+    file ".sc"
+    encoding cp932
+
+    type ControlText = matches "^(?:\\\\[A-Za-z]|戞)+$"
+
+    quotes:
+        pair "“" "”"
+        pair "‘" "’"
+        pair "≪" "≫"
+        pair "挌" "拮"
+        pair "抛" "拉"
+        pair "Åg" "Åh"
+        pair "�g" "�h"
+
+    protect:
+        matches "\\\\[A-Za-z]+"
+        between "＊" and "＊"
+        matches "#[0-9]+"
+
+    ignore:
+        empty
+
+    choice:
+        when starts with ".select"
+        capture text as rest
+        save as Choice
+        patch text
+
+    rule Control:
+        when format ".message <id:number> <text:ControlText>"
+        skip
+
+    dialogue:
+        when starts with ".message"
+        capture id as number
+        capture voice as optional
+        capture speaker before quoted text
+        capture speaker before rest text if starts with any "@", "#"
+        capture text as quoted or rest
+        speaker fallback voice.speaker
+        save as Dialogue
+        save otherwise as Narration
+        patch text
+        patch speaker

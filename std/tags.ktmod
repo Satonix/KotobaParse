@@ -1,0 +1,6 @@
+# Reserved for future KotobaParse modules.
+# Example future preset:
+# protect
+#     [r]
+#     [p]
+#     pattern "\\[[^\\]]+\\]"

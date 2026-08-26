@@ -1,0 +1,13 @@
+parser FlexiblePrintTextTSV:
+    file ".jp"
+    encoding utf8
+
+    ignore:
+        empty
+
+    rule Dialogue:
+        when starts with "[PrintText]="
+        capture speaker as field 2 separated by tab
+        capture text as field 3 separated by tab
+        save as Dialogue
+        patch text

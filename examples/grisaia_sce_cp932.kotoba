@@ -1,0 +1,46 @@
+parser GrisaiaSceCP932:
+    file ".txt"
+    encoding windows-1252
+
+    quotes:
+        pair "「" "」"
+
+    protect:
+        between "[" and "]"
+        literal "\\n"
+        literal "\\@"
+
+    ignore:
+        empty
+        starts with any "#", "frameoff ", "view ", "auto ", "mesdraw ", "fesjs ", "if", "se ", "bgm ", "wait", "eg ", "bg ", "rdraw ", "cg ", "pl ", "fg ", "pcm ", "end_of_kaisou", "next "
+        equals "\\n"
+
+    text SceneTitle:
+        when matches "^str 155[ \t]+(?P<text>.+)$"
+        capture text as rest
+        patch text
+
+    ignore StringCommand:
+        when starts with "str "
+
+    dialogue Main:
+        when matches "^(?P<speaker>[^\t]+)\t(?P<text>「[^」]*」)(?:\\\\@)?$"
+        capture text as quoted
+        patch speaker
+        patch text
+
+    dialogue SplitStart:
+        when matches "^(?P<speaker>[^\t]+)\t「(?P<text>[^」]+)\\\\@$"
+        patch speaker
+        patch text
+        remember speaker
+
+    dialogue SplitEnd:
+        when matches "^(?P<text>.+)」\\\\@$"
+        speaker fallback speaker
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

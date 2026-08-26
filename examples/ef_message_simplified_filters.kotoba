@@ -1,0 +1,11 @@
+parser EfMusicaSimplifiedFilters:
+    file ".sc"
+    encoding cp932
+
+    ignore:
+        empty
+
+    rule Message:
+        when format ".message <id:number> <text:rest>"
+        save as Narration
+        patch text

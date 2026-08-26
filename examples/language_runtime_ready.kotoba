@@ -1,0 +1,24 @@
+parser RuntimeReadyShowcase:
+    file ".txt"
+    encoding utf8
+
+    protect:
+        matches "@[A-Za-z0-9_]+"
+        literal "@n"
+
+    rule SpeakerLine:
+        when format "speaker=<speaker:rest>"
+        remember speaker
+        skip
+
+    rule VoiceLine:
+        when format "voice=<voice:word>"
+        remember voice
+        skip
+
+    rule Dialogue:
+        when format "text=<text:quoted>"
+        speaker fallback speaker
+        context is voice
+        save as Dialogue
+        patch text

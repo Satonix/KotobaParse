@@ -1,0 +1,14 @@
+[package]
+name = "kotoba-core"
+version = "0.3.0-alpha.7"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+encoding_rs.workspace = true
+thiserror.workspace = true

@@ -1,0 +1,22 @@
+parser FlexibleKirikiriName:
+    file ".ks"
+    encoding utf16le
+
+    protect:
+        between "[" and "]"
+
+    ignore:
+        empty
+        starts with ";"
+
+    rule Speaker:
+        when starts with "[name"
+        capture speaker from attribute "text"
+        remember speaker
+        skip
+
+    rule Dialogue:
+        capture text as quoted
+        speaker fallback speaker
+        save as Dialogue
+        patch text

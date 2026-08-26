@@ -1,0 +1,17 @@
+[package]
+name = "kotoba-cli"
+version = "0.3.0-alpha.7"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "kotoba"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+kotoba-core = { path = "../kotoba-core" }

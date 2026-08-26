@@ -1,0 +1,28 @@
+parser StellaOfTheEndAST:
+    file ".ast"
+    encoding utf8
+
+    read:
+        records as blocks
+        block starts with "text = {"
+        block ends when braces close
+
+    protect:
+        literal "[["
+        literal "]]"
+
+    voice:
+        section "vo"
+        capture speaker from attribute "ch"
+        capture voice from attribute "file"
+        remember voice
+        skip
+
+    dialogue:
+        section "en"
+        capture text between "[[" and "]]"
+
+        speaker fallback remembered speaker
+
+        save as Dialogue
+        patch text

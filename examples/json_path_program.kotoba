@@ -1,0 +1,10 @@
+parser JsonPathScenario:
+    file ".json"
+    encoding utf8
+
+    json Line:
+        entries "$.scenes[*].lines[*]"
+        id "id"
+        speaker "speaker"
+        context "voice"
+        text "text"

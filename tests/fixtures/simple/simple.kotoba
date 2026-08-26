@@ -1,0 +1,14 @@
+parser SimpleFixture
+target ".txt"
+encoding utf8
+
+rule dialogue
+    [name=<speaker:quoted>] <text:rest>
+    as Dialogue(text, speaker)
+    patch text
+    patch speaker speaker
+
+rule narration
+    <text:line>
+    as Narration(text)
+    patch text

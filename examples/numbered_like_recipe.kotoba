@@ -1,0 +1,17 @@
+parser NumberedLikeRecipe:
+    file ".txt"
+    encoding utf8
+
+    numbered lines:
+        id between "<" and ">"
+
+    ignore:
+        empty
+        like any "bgm#", "se#", "map#", "sp#*", "ev#*", "#-#_*"
+        equals "black"
+        equals "white"
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

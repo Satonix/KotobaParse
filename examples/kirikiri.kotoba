@@ -1,0 +1,17 @@
+parser KiriKiri:
+    file ".ks"
+    encoding cp932
+
+    protect:
+        between "[" and "]"
+
+    ignore:
+        empty
+        starts with ";"
+        starts with "*"
+        starts with "["
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

@@ -1,0 +1,26 @@
+parser GoreScreamingShowSystemNNN:
+    file ".txt"
+    encoding utf8
+
+    ignore:
+        empty
+        equals "/cut"
+
+    choice:
+        when starts with "/choice"
+        capture text as rest
+        save as Choice
+        patch text
+
+    dialogue:
+        when starts with "<"
+        capture speaker between "<" and ">"
+        capture text after ">"
+        save as Dialogue
+        patch speaker
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

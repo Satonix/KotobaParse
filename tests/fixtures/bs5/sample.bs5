@@ -1,0 +1,4 @@
+<scenario>
+  <speak name="Misaki"><jp>こんにちは。</jp><en>Hello.</en></speak>
+  <speak name="Mashiro"><jp>空が青い。</jp><en>The sky is blue.</en></speak>
+</scenario>

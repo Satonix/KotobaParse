@@ -1,0 +1,35 @@
+parser MultilingualBS5:
+    file ".bs5"
+    encoding utf8
+
+    read:
+        records as segmented lines
+        segments separated by "␂"
+        choice segments separated by "␅"
+        fields "en", "ja", "zh_cn", "zh_tw"
+        source field "en"
+        patch field "en"
+
+    ignore:
+        empty
+        starts with "//"
+
+    dialogue:
+        field "en"
+        capture speaker between "【" and "】"
+        capture text after "】："
+        save as Dialogue
+        patch field
+
+    text:
+        field "en"
+        capture text as rest
+        save as Narration
+        patch field
+
+    choice:
+        field "en"
+        when starts with "select"
+        capture choices as quoted
+        save as ChoiceGroup
+        patch field

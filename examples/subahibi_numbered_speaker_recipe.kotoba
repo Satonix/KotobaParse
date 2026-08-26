@@ -1,0 +1,35 @@
+parser SubahibiNumberedScript:
+    file ".txt"
+    encoding utf8
+
+    numbered lines:
+        id between "<" and ">"
+
+    ignore:
+        empty
+        like any "bgm#", "se#", "map#", "sp#*", "ev#*", "#-#_*"
+        equals "black"
+        equals "white"
+
+    voice:
+        like any "{speaker}_000000", "{speaker}_000000_*"
+        remember voice
+        skip
+
+    speaker:
+        when previous is voice
+        when next is quoted
+        remember speaker
+        skip
+
+    dialogue:
+        capture text as quoted
+        speaker fallback remembered speaker
+        speaker fallback voice.speaker
+        save as Dialogue
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text

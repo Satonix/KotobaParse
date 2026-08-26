@@ -1,0 +1,27 @@
+parser MajikoiPlainText:
+    file ".txt"
+    encoding utf16le
+
+    type SpeakerName = matches "^(Momoyo|Yamato|Kazuko|Chris|Miyako|Yukie|Gakuto|Takuya|Shouichi|Touma|Jun|Kokoro|Azumi|Koyuki|Kyojin|Umeko)$"
+    type VoiceId = matches "^v[A-Za-z][A-Za-z0-9_]+$"
+
+    ignore:
+        empty
+        asset
+
+    rule Speaker:
+        when format "<speaker:SpeakerName>"
+        remember speaker
+        skip
+
+    rule VoicedDialogue:
+        when format "@<voice:VoiceId> <text:line>"
+        speaker fallback speaker
+        context is voice
+        save as Dialogue
+        patch text
+
+    text:
+        capture text as rest
+        save as Narration
+        patch text
