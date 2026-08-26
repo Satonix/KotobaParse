@@ -35,9 +35,6 @@ preview_*.json
 *.msi
 *.exe
 
-# Local packaging helper
-zipar-KotobaParse.bat
-
 # OS / editor
 .DS_Store
 Thumbs.db
